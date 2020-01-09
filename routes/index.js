@@ -1,6 +1,9 @@
-'use strict';
-const route = require('express').Router();
+'use strict'
 
-route.get('/test', (req, res, next) =>  res.status(200).json({ message: 'ok' }));
+const route = require('express').Router()
+const foursquareAPIRoute = require('./foursquare')
 
-module.exports = route;
+route.get('/test', (req, res, next) => res.status(200).json({ message: 'ok' }))
+route.use('/foursquareAPI', foursquareAPIRoute)
+
+module.exports = route
