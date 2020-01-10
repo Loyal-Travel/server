@@ -11,17 +11,27 @@ class FoursquareAPI {
             .then(({ data }) => {
                 const venues = []
                 data.response.groups[0].items.forEach(element => {
-                    venues.push(element.venue)
-                });
+                    const categories = []
+                    element.venue.categories.forEach(category => {
+                        categories.push(category.name)
+                    })
+                    venues.push({
+                        name: element.venue.name,
+                        location: {
+                            address: element.venue.location.address,
+                            lng: element.venue.location.lng,
+                            lat: element.venue.location.lat
+                        },
+                        categories
+                    })
+                })
                 res.status(200).json({
                     city: {
                         name: data.response.geocode.displayString,
-                        lat: data.response.geocode.center.lat,
                         lng: data.response.geocode.center.lng,
+                        lat: data.response.geocode.center.lat,
                     },
                     venues
-
-
                 })
             })
             .catch(err => {
