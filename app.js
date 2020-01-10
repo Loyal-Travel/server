@@ -4,7 +4,7 @@ const PORT = process.env.PORT;
 // const MONGO_URI = process.env.MONGO_URI;
 
 const express = require('express');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const cors = require('cors');
 const routing = require('./routes');
 
