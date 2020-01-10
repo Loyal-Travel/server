@@ -1,6 +1,7 @@
 'use strict';
 const route = require('express').Router();
+const weather = require('./weather');
 
-route.get('/test', (req, res, next) =>  res.status(200).json({ message: 'ok' }));
+route.use('/weather', weather);
 
 module.exports = route;
