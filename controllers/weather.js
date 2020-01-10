@@ -7,22 +7,21 @@ class Weather {
     const responseData = {};
     axios({
       method: 'get',
-      // url: `http://api.weatherstack.com/current?access_key=a25b9a531c30d174506175f9283d45e3&query=${city}`,
-      url: `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=t33TrtBzeY69mhHkTMgGqj8G65hsSFVC&q=${city}`,
+      url: `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=Cj7af7JAxZPoUax9xRNBOEY5uAURp57i&q=${city}`,
     })
     .then(({ data }) => {
       const { Key, Region, Country, AdministrativeArea, TimeZone, EnglishName } = data[0]
       responseData.cityKey = Key;
       responseData.timeZone = { name: TimeZone.Name, GMT: TimeZone.GmtOffset }
-      responseData.area = `${EnglishName}, ${AdministrativeArea.EnglishName}, ${Country.LocalizedName}`
-      responseData.region = Region.EnglishName
+      responseData.area = `${EnglishName}, ${AdministrativeArea.EnglishName}`
+      responseData.region = Country.LocalizedName
       return responseData;
     })
     .then((searchData) => {
       const { cityKey } = searchData
       axios({
         method: 'get',
-        url: `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=t33TrtBzeY69mhHkTMgGqj8G65hsSFVC`
+        url: `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=Cj7af7JAxZPoUax9xRNBOEY5uAURp57i`
       })
       .then(({ data }) => {
         const weatherInfo = {};
@@ -30,8 +29,11 @@ class Weather {
         weatherInfo.category = data.Headline.Category;
         weatherInfo.forecast = [];
         data.DailyForecasts.forEach(daily => {
+          const d = new Date(daily.Date.split('T')[0]);
+          const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+          const day = days[d.getDay()];
           const info = {
-            date: daily.Date,
+            date: day,
             temperature: {
               min: `${daily.Temperature.Minimum.Value} ${daily.Temperature.Minimum.Unit}`,
               max: `${daily.Temperature.Maximum.Value} ${daily.Temperature.Maximum.Unit}`,
